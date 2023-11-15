@@ -26,11 +26,12 @@ CREATE TABLE team (
 	conference_id INT,
 	FOREIGN KEY (conference_id) REFERENCES conference(conference_id)
 );
-/* needs foreign key work
+
 CREATE TABLE teamgame (
 	team_id INT,
 	game_id INT,
-	teamgame_points_scored INT
+	teamgame_points_scored INT,
+	PRIMARY KEY (team_id, game_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id),
 	FOREIGN KEY (game_id) REFERENCES game(game_id)
 );
@@ -38,9 +39,10 @@ CREATE TABLE teamgame (
 CREATE TABLE teamtrade (
 	trade_id INT,
 	team_id INT,
-	FOREIGN KEY (trade_id) REFERENCES trades(trade_id).
+	PRIMARY KEY (trade_id, team_id),
+	FOREIGN KEY (trade_id) REFERENCES trades(trade_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
-);*/
+);
 
 CREATE TABLE player (
 	player_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,10 +52,11 @@ CREATE TABLE player (
 	team_id INT,
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
 );
-/* needs work
+
 CREATE TABLE playerposition (
 	position_id INT,
 	player_id INT,
+	PRIMARY KEY (position_id, player_id),
 	FOREIGN KEY (position_id) REFERENCES position(position_id),
 	FOREIGN KEY (player_id) REFERENCES player(player_id)
 );
@@ -61,9 +64,10 @@ CREATE TABLE playerposition (
 CREATE TABLE playertrade (
 	trade_id INT,
 	player_id INT,
+	PRIMARY KEY (trade_id, player_id),
 	FOREIGN KEY (trade_id) REFERENCES trades(trade_id),
 	FOREIGN KEY (player_id) REFERENCES player(player_id)
-);*/
+);
 
 CREATE TABLE injury (
 	injury_id INT AUTO_INCREMENT PRIMARY KEY,
