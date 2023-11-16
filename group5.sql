@@ -104,7 +104,7 @@ CREATE TABLE statistics (
 	statistics_interc INT,
 	statistics_fg_cmp INT,
 	statistics_fg_att INT,
-	player_id INT
+	player_id INT,
 	game_id INT,
 	FOREIGN KEY (player_id) REFERENCES player(player_id),
 	FOREIGN KEY (game_id) REFERENCES game(game_id)
