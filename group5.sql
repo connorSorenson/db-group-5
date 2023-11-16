@@ -48,7 +48,7 @@ CREATE TABLE player (
 	player_id INT AUTO_INCREMENT PRIMARY KEY,
 	player_first_name VARCHAR(50),
 	player_last_name VARCHAR(50),
-	player_salary VARCHAR(50),
+	player_salary INT,
 	team_id INT,
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
 );
