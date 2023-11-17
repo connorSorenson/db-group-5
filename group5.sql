@@ -1,12 +1,12 @@
-CREATE TABLE trades (
-	trades_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE trade (
+	trade_id INT AUTO_INCREMENT PRIMARY KEY,
 	trade_result VARCHAR(50),
 	trade_date DATETIME
 );
 
-CREATE TABLE position (
-	position_id INT AUTO_INCREMENT PRIMARY KEY,
-	position_name VARCHAR(50)
+CREATE TABLE positions (
+	positions_id INT AUTO_INCREMENT PRIMARY KEY,
+	positions_name VARCHAR(50)
 );
 
 CREATE TABLE game (
@@ -40,7 +40,7 @@ CREATE TABLE teamtrade (
 	trade_id INT,
 	team_id INT,
 	PRIMARY KEY (trade_id, team_id),
-	FOREIGN KEY (trade_id) REFERENCES trades(trade_id),
+	FOREIGN KEY (trade_id) REFERENCES trade(trade_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
 );
 
@@ -53,11 +53,11 @@ CREATE TABLE player (
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
 );
 
-CREATE TABLE playerposition (
-	position_id INT,
+CREATE TABLE playerpositions (
+	positions_id INT,
 	player_id INT,
-	PRIMARY KEY (position_id, player_id),
-	FOREIGN KEY (position_id) REFERENCES position(position_id),
+	PRIMARY KEY (positions_id, player_id),
+	FOREIGN KEY (positions_id) REFERENCES positions(positions_id),
 	FOREIGN KEY (player_id) REFERENCES player(player_id)
 );
 
@@ -65,7 +65,7 @@ CREATE TABLE playertrade (
 	trade_id INT,
 	player_id INT,
 	PRIMARY KEY (trade_id, player_id),
-	FOREIGN KEY (trade_id) REFERENCES trades(trade_id),
+	FOREIGN KEY (trade_id) REFERENCES trade(trade_id),
 	FOREIGN KEY (player_id) REFERENCES player(player_id)
 );
 
@@ -73,7 +73,7 @@ CREATE TABLE injury (
 	injury_id INT AUTO_INCREMENT PRIMARY KEY,
 	injury_description VARCHAR(100),
 	injury_status VARCHAR(50),
-	injury_return_date DATETIME
+	injury_return_date DATETIME,
 	player_id INT,
 	FOREIGN KEY (player_id) REFERENCES player(player_id)
 );
