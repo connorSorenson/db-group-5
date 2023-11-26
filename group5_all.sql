@@ -1,3 +1,16 @@
+DROP TABLE IF EXISTS statistics;
+DROP TABLE IF EXISTS injury;
+DROP TABLE IF EXISTS playertrade;
+DROP TABLE IF EXISTS playerpositions;
+DROP TABLE IF EXISTS player;
+DROP TABLE IF EXISTS teamtrade;
+DROP TABLE IF EXISTS teamgame;
+DROP TABLE IF EXISTS team;
+DROP TABLE IF EXISTS game;
+DROP TABLE IF EXISTS positions;
+DROP TABLE IF EXISTS trade;
+DROP TABLE IF EXISTS conference;
+
 CREATE TABLE trade (
 	trade_id INT AUTO_INCREMENT PRIMARY KEY,
 	trade_result VARCHAR(50),
@@ -105,19 +118,11 @@ CREATE TABLE statistics (
 	statistics_fg_cmp INT,
 	statistics_fg_att INT,
 	player_id INT,
-	game_id INT,
-	FOREIGN KEY (player_id) REFERENCES player(player_id),
-	FOREIGN KEY (game_id) REFERENCES game(game_id)
+	FOREIGN KEY (player_id) REFERENCES player(player_id)
 );
 
-
-/* manual test input
-
-INSERT INTO conference (conference_name) VALUES 
-('AFC'),
-('NFC');
-
-INSERT INTO position (position_name) VALUES 
+/* data inserts */
+INSERT INTO positions (positions_name) VALUES 
 ('Quarterback'),
 ('Running Back'),
 ('Wide Receiver'),
@@ -127,7 +132,7 @@ INSERT INTO position (position_name) VALUES
 ('Cornerback'),
 ('Safety');
 
-INSERT INTO trades (trade_result, trade_date) VALUES 
+INSERT INTO trade (trade_result, trade_date) VALUES 
 ('Successful', '2023-11-16 10:00:00'),
 ('Failed', '2023-11-15 11:30:00');
 
@@ -135,13 +140,38 @@ INSERT INTO game (game_date) VALUES
 ('2023-11-12 13:00:00'),
 ('2023-11-13 15:30:00');
 
+INSERT INTO conference (conference_name) VALUES 
+('AFC'),
+('NFC');
+
 INSERT INTO team (team_name, team_owner, conference_id) VALUES 
 ('Dallas Cowboys', 'Jerry Jones', 1),
 ('Green Bay Packers', 'Mark Murphy', 2),
 ('Kansas City Chiefs', 'Clark Hunt', 1),
-('Tampa Bay Buccaneers', 'Glazer Family', 2);
+('Tampa Bay Buccaneers', 'Glazer Family', 2),
+('San Francisco 49ers', 'Denise DeBartolo York', 2),
+('Tennessee Titans', 'Amy Adams Strunk', 1),
+('Las Vegas Raiders', 'Davis Family', 1),
+('Jacksonville Jaguars', 'Shahid Khan', 1),
+('Indianapolis Colts', 'Jim Irsay', 1),
+('Buffalo Bills', 'Terry Pegula', 1),
+('Philadelphia Eagles', 'Jeffrey Lurie', 2),
+('Atlanta Falcons', 'Arthur Blank', 2),
+('Cincinnati Bengals', 'Michael Brown', 1),
+('Miami Dolphins', 'Stephen M. Ross', 1),
+('Seattle Seahawks', 'The Paul Allen Trust', 2),
+('New York Giants', 'John Kevin Mara', 2),
+('Baltimore Ravens', 'Steve Bisciotti', 1),
+('Cleveland Browns', 'Haslam Family', 1),
+('New York Jets', 'Woody Johnson', 1),
+('Detroit Lions', 'Sheila Ford Hamp', 2),
+('Washington Commanders', 'Josh Harris', 2),
+('New England Patriots', 'Robert Kraft', 1),
+('Pittsburgh Steelers', 'Rooney family', 1),
+('Minnesota Vikings', 'Zygi Wilf', 2)
+ON DUPLICATE KEY UPDATE team_id = LAST_INSERT_ID(team_id);
 
-INSERT INTO teamgame (team_id, game_id, teamgame_points_scored) VALUES 
+INSERT INTO teamgame (team_id, game_id, teamgame_points_scored) VALUES
 (1, 1, 28),
 (2, 1, 24),
 (3, 2, 35),
@@ -154,12 +184,38 @@ INSERT INTO teamtrade (trade_id, team_id) VALUES
 (2, 4);
 
 INSERT INTO player (player_first_name, player_last_name, player_salary, team_id) VALUES 
-('Dak', 'Prescott', 4000000, 1),
-('Aaron', 'Rodgers', 3300000, 2),
-('Patrick', 'Mahomes', 4200000, 3),
-('Tom', 'Brady', 3100000, 4);
+('Dak', 'Prescott', 4000000, (SELECT team_id FROM team WHERE team_name = 'Dallas Cowboys')),
+('Aaron', 'Rodgers', 3300000, (SELECT team_id FROM team WHERE team_name = 'Green Bay Packers')),
+('Patrick', 'Mahomes', 4200000, (SELECT team_id FROM team WHERE team_name = 'Kansas City Chiefs')),
+('Tom', 'Brady', 3100000, (SELECT team_id FROM team WHERE team_name = 'Tampa Bay Buccaneers')),
+('Christian', 'McCaffrey', 64000000, (SELECT team_id FROM team WHERE team_name = 'San Francisco 49ers')),
+('Derrick', 'Henry', 1351982, (SELECT team_id FROM team WHERE team_name = 'Tennessee Titans')),
+('Josh', 'Jacobs', 7590996, (SELECT team_id FROM team WHERE team_name = 'Las Vegas Raiders')),
+('Travis', 'Etienne', 3224526, (SELECT team_id FROM team WHERE team_name = 'Jacksonville Jaguars')),
+('Zack', 'Moss', 1153079, (SELECT team_id FROM team WHERE team_name = 'Indianapolis Colts')),
+('James', 'Cook', 1458014, (SELECT team_id FROM team WHERE team_name = 'Buffalo Bills')),
+('D\'Andre', 'Swift', 2134729, (SELECT team_id FROM team WHERE team_name = 'Philadelphia Eagles')),
+('Bijan', 'Robinson', 5490000, (SELECT team_id FROM team WHERE team_name = 'Atlanta Falcons')),
+('Joe', 'Mixon', 5750000, (SELECT team_id FROM team WHERE team_name = 'Cincinnati Bengals')),
+('Raheem', 'Mostert', 2800000, (SELECT team_id FROM team WHERE team_name = 'Miami Dolphins')),
+('Kenneth', 'Walker III', 2110395, (SELECT team_id FROM team WHERE team_name = 'Seattle Seahawks')),
+('Saquon', 'Barkley', 8091000, (SELECT team_id FROM team WHERE team_name = 'New York Giants')),
+('Gus', 'Edwards', 3384000, (SELECT team_id FROM team WHERE team_name = 'Baltimore Ravens')),
+('Lamar', 'Jackson',7500000, (SELECT team_id FROM team WHERE team_name = 'Baltimore Ravens')),
+('Jerome', 'Ford', 995537, (SELECT team_id FROM team WHERE team_name = 'Cleveland Browns')),
+('Tony', 'Pollard', 10091000, (SELECT team_id FROM team WHERE team_name = 'Dallas Cowboys')),
+('Isiah', 'Pacheco', 934777, (SELECT team_id FROM team WHERE team_name = 'Kansas City Chiefs')),
+('Breece', 'Hall', 2253694, (SELECT team_id FROM team WHERE team_name = 'New York Jets')),
+('David', 'Montgomery', 6000000, (SELECT team_id FROM team WHERE team_name = 'Detroit Lions')),
+('Brian', 'Robinson', 1261227, (SELECT team_id FROM team WHERE team_name = 'Washington Commanders')),
+('Rhamondre', 'Stevenson', 1057264, (SELECT team_id FROM team WHERE team_name = 'New England Patriots')),
+('Jahmyr', 'Gibbs', 4461283, (SELECT team_id FROM team WHERE team_name = 'Detroit Lions')),
+('Najee', 'Harris', 3261862, (SELECT team_id FROM team WHERE team_name = 'Pittsburgh Steelers')),
+('Alexander', 'Mattison', 1100000, (SELECT team_id FROM team WHERE team_name = 'Minnesota Vikings')),
+('De\'Von', 'Achane', 1359362, (SELECT team_id FROM team WHERE team_name = 'Miami Dolphins'))
+ON DUPLICATE KEY UPDATE player_id = LAST_INSERT_ID(player_id);
 
-INSERT INTO playerposition (position_id, player_id) VALUES 
+INSERT INTO playerpositions (positions_id, player_id) VALUES 
 (1, 1),
 (1, 2),
 (1, 3),
@@ -177,20 +233,30 @@ INSERT INTO injury (injury_description, injury_status, injury_return_date, playe
 ('Knee Injury', 'Probable', '2023-11-17 00:00:00', 3),
 ('Shoulder Strain', 'Probable', '2023-11-19 00:00:00', 4);
 
-INSERT INTO statistics (
-    statistics_pass_yds, statistics_pass_att, statistics_pass_cmp, 
-    statistics_pass_TD, statistics_pass_Int, statistics_pass_Sck, 
-    statistics_pass_SckY, statistics_rush_yds, statistics_rush_att, 
-    statistics_rush_TD, statistics_rush_1st, statistics_rec_rec, 
-    statistics_rec_yds, statistics_rec_TD, statistics_rec_1st, 
-    statistics_tackle_comb, statistics_tackle_solo, statistics_tackle_asst, 
-    statistics_tackle_sck, statistics_int_TD, statistics_int_yds, 
-    statistics_interc, statistics_fg_cmp, statistics_fg_att, player_id, game_id
-) VALUES 
-(300, 25, 18, 2, 1, 3, 20, 50, 10, 1, 5, 0, 0, 0, 0, 4, 3, 1, 2, 0, 0, 0, 0, 1),
-(250, 30, 20, 3, 0, 2, 15, 40, 8, 0, 3, 0, 0, 0, 0, 2, 2, 0, 1, 0, 0, 0, 0, 2),
-(350, 28, 22, 4, 1, 1, 5, 60, 12, 2, 6, 0, 0, 0, 0, 3, 2, 1, 0, 0, 0, 0, 0, 3),
-(280, 27, 19, 3, 0, 3, 25, 55, 11, 1, 4, 0, 0, 0, 0, 4, 3, 1, 1, 0, 0, 0, 0, 4);
-
-
-*/
+INSERT INTO statistics (player_id, statistics_rush_yds, statistics_rush_TD, statistics_rush_1st) VALUES 
+((SELECT player_id FROM player WHERE player_first_name = 'Christian' AND player_last_name = 'McCaffrey'), 747, 9, 44),
+((SELECT player_id FROM player WHERE player_first_name = 'Derrick' AND player_last_name = 'Henry'), 625, 4, 30),
+((SELECT player_id FROM player WHERE player_first_name = 'Josh' AND player_last_name = 'Jacobs'), 622, 5, 30),
+((SELECT player_id FROM player WHERE player_first_name = 'Travis' AND player_last_name = 'Etienne'), 618, 7, 33),
+((SELECT player_id FROM player WHERE player_first_name = 'Zack' AND player_last_name = 'Moss'), 617, 5, 31),
+((SELECT player_id FROM player WHERE player_first_name = 'James' AND player_last_name = 'Cook'), 615, 1, 31),
+((SELECT player_id FROM player WHERE player_first_name = 'D\'Andre' AND player_last_name = 'Swift'), 614, 3, 30),
+((SELECT player_id FROM player WHERE player_first_name = 'Bijan' AND player_last_name = 'Robinson'), 612, 2, 32),
+((SELECT player_id FROM player WHERE player_first_name = 'Joe' AND player_last_name = 'Mixon'), 605, 4, 38),
+((SELECT player_id FROM player WHERE player_first_name = 'Raheem' AND player_last_name = 'Mostert'), 605, 11, 32),
+((SELECT player_id FROM player WHERE player_first_name = 'Kenneth' AND player_last_name = 'Walker III'), 595, 6, 28),
+((SELECT player_id FROM player WHERE player_first_name = 'Saquon' AND player_last_name = 'Barkley'), 568, 1, 26),
+((SELECT player_id FROM player WHERE player_first_name = 'Gus' AND player_last_name = 'Edwards'), 564, 10, 36),
+((SELECT player_id FROM player WHERE player_first_name = 'Lamar' AND player_last_name = 'Jackson'), 535, 5, 35),
+((SELECT player_id FROM player WHERE player_first_name = 'Jerome' AND player_last_name = 'Ford'), 532, 2, 19),
+((SELECT player_id FROM player WHERE player_first_name = 'Tony' AND player_last_name = 'Pollard'), 529, 2, 27),
+((SELECT player_id FROM player WHERE player_first_name = 'Isiah' AND player_last_name = 'Pacheco'), 525, 3, 30),
+((SELECT player_id FROM player WHERE player_first_name = 'Breece' AND player_last_name = 'Hall'), 521, 2, 17),
+((SELECT player_id FROM player WHERE player_first_name = 'David' AND player_last_name = 'Montgomery'), 501, 7, 26),
+((SELECT player_id FROM player WHERE player_first_name = 'Brian' AND player_last_name = 'Robinson'), 485, 5, 31),
+((SELECT player_id FROM player WHERE player_first_name = 'Rhamondre' AND player_last_name = 'Stevenson'), 482, 3, 25),
+((SELECT player_id FROM player WHERE player_first_name = 'Jahmyr' AND player_last_name = 'Gibbs'), 476, 4, 20),
+((SELECT player_id FROM player WHERE player_first_name = 'Najee' AND player_last_name = 'Harris'), 464, 3, 23),
+((SELECT player_id FROM player WHERE player_first_name = 'Alexander' AND player_last_name = 'Mattison'), 461, 0, 18),
+((SELECT player_id FROM player WHERE player_first_name = 'De\'Von' AND player_last_name = 'Achane'), 460, 5, 15)
+;
