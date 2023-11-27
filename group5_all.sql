@@ -1,15 +1,4 @@
-DROP TABLE IF EXISTS statistics;
-DROP TABLE IF EXISTS injury;
-DROP TABLE IF EXISTS playertrade;
-DROP TABLE IF EXISTS playerpositions;
-DROP TABLE IF EXISTS player;
-DROP TABLE IF EXISTS teamtrade;
-DROP TABLE IF EXISTS teamgame;
-DROP TABLE IF EXISTS team;
-DROP TABLE IF EXISTS game;
-DROP TABLE IF EXISTS positions;
-DROP TABLE IF EXISTS trade;
-DROP TABLE IF EXISTS conference;
+CREATE DATABASE group_5;
 
 CREATE TABLE trade (
 	trade_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -247,7 +236,9 @@ INSERT INTO playerpositions (positions_id, player_id) VALUES
 (2, 26),
 (2, 27),
 (2, 28),
-(2, 29);
+(2, 29),
+(3, 30),
+(3, 31);
 
 INSERT INTO playertrade (trade_id, player_id) VALUES 
 (1, 1),
