@@ -168,10 +168,11 @@ INSERT INTO team (team_name, team_owner, conference_id) VALUES
 ('Washington Commanders', 'Josh Harris', 2),
 ('New England Patriots', 'Robert Kraft', 1),
 ('Pittsburgh Steelers', 'Rooney family', 1),
-('Minnesota Vikings', 'Zygi Wilf', 2)
+('Minnesota Vikings', 'Zygi Wilf', 2),
+('Los Angeles Chargers', 'Dean Spanos', 1)
 ON DUPLICATE KEY UPDATE team_id = LAST_INSERT_ID(team_id);
 
-INSERT INTO teamgame (team_id, game_id, teamgame_points_scored) VALUES
+INSERT INTO teamgame (team_id, game_id, teamgame_points_scored) VALUES 
 (1, 1, 28),
 (2, 1, 24),
 (3, 2, 35),
@@ -212,14 +213,41 @@ INSERT INTO player (player_first_name, player_last_name, player_salary, team_id)
 ('Jahmyr', 'Gibbs', 4461283, (SELECT team_id FROM team WHERE team_name = 'Detroit Lions')),
 ('Najee', 'Harris', 3261862, (SELECT team_id FROM team WHERE team_name = 'Pittsburgh Steelers')),
 ('Alexander', 'Mattison', 1100000, (SELECT team_id FROM team WHERE team_name = 'Minnesota Vikings')),
-('De\'Von', 'Achane', 1359362, (SELECT team_id FROM team WHERE team_name = 'Miami Dolphins'))
+('De\'Von', 'Achane', 1359362, (SELECT team_id FROM team WHERE team_name = 'Miami Dolphins')),
+('Keenan', 'Allen', 613800, (SELECT team_id FROM team WHERE team_name = 'Los Angeles Chargers')),
+('Stefon', 'Digs', 1165000, (SELECT team_id FROM team WHERE team_name = 'Buffalo Bills'))
 ON DUPLICATE KEY UPDATE player_id = LAST_INSERT_ID(player_id);
 
 INSERT INTO playerpositions (positions_id, player_id) VALUES 
 (1, 1),
 (1, 2),
 (1, 3),
-(1, 4);
+(1, 4),
+(2, 5),
+(2, 6),
+(2, 7),
+(2, 8),
+(2, 9),
+(2, 10),
+(2, 11),
+(2, 12),
+(2, 13),
+(2, 14),
+(2, 15),
+(2, 16),
+(2, 17),
+(2, 18),
+(2, 19),
+(2, 20),
+(2, 21),
+(2, 22),
+(2, 23),
+(2, 24),
+(2, 25),
+(2, 26),
+(2, 27),
+(2, 28),
+(2, 29);
 
 INSERT INTO playertrade (trade_id, player_id) VALUES 
 (1, 1),
@@ -259,4 +287,8 @@ INSERT INTO statistics (player_id, statistics_rush_yds, statistics_rush_TD, stat
 ((SELECT player_id FROM player WHERE player_first_name = 'Najee' AND player_last_name = 'Harris'), 464, 3, 23),
 ((SELECT player_id FROM player WHERE player_first_name = 'Alexander' AND player_last_name = 'Mattison'), 461, 0, 18),
 ((SELECT player_id FROM player WHERE player_first_name = 'De\'Von' AND player_last_name = 'Achane'), 460, 5, 15)
+;
+INSERT INTO statistics (player_id, statistics_rec_yds, statistics_rec_rec, statistics_rec_TD, statistics_rec_1st) VALUES 
+((SELECT player_id FROM player WHERE player_first_name = 'Keenan' AND player_last_name = 'Allen'), 895, 73, 6, 41),
+((SELECT player_id FROM player WHERE player_first_name = 'Stefon' AND player_last_name = 'Diggs'),895, 73, 6, 41)
 ;
